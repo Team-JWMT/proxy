@@ -1,5 +1,7 @@
 # Project Agreement
 
+Kameron Watts, Zachariah Jeter, Cheryl McCalop, Jonathan Tsai
+
 ## Cooperation Plan
 
 ### What are the key strengths of each person on the team?
