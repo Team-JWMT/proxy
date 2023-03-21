@@ -4,7 +4,7 @@ require('dotenv').config;
 let express = require('express');
 let cors = require('cors');
 
-const Company = require('./models/company.js');
+const company = require('./modules/company.js');
 
 const app = (express.json());
 const mongoose = require('mongoose');
@@ -26,7 +26,7 @@ app.post('company');
 app.put('/company');
 app.delete('/company');
 
-getCompany = async (req, res, next) => {
+getCompanyFromDB = async (req, res, next) => {
   console.log('You have the company');
   try {
     let result = Company.find({})
@@ -37,7 +37,7 @@ getCompany = async (req, res, next) => {
   }
 }
 
-postCompany = async (req, res, next) => {
+postCompanyToDB = async (req, res, next) => {
   console.log('Your company posted');
   try {
     let createdCompany = await Company.create(req.body);
@@ -48,7 +48,7 @@ postCompany = async (req, res, next) => {
   }
 }
 
-deleteCompany = async (req, res, next) => {
+deleteCompanyFromDB = async (req, res, next) => {
   console.log('Company deleting');
   try {
     let id = req.params.id
@@ -59,7 +59,7 @@ deleteCompany = async (req, res, next) => {
   }
 }
 
-putCompany = async (req, res, next) => {
+putCompanyInDB = async (req, res, next) => {
   try {
   let id = req.params.id;
   let updatedCompany = req.body
@@ -67,6 +67,14 @@ putCompany = async (req, res, next) => {
   res.status(200).send(updatedCompanyFromDatabase);
   } catch (error) {
     next(error)
+  }
+}
+
+companyHandler = (request, response) => {
+  const {search, location } = request.query;
+
+  company(search, location) {
+    
   }
 }
 
