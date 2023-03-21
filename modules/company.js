@@ -1,5 +1,8 @@
 'use strict'
 
+const axios = require('axios');
+require('dotenv').config();
+
 class Company {
   constructor(CompanyObject) {
     this.name = CompanyObject.name,
@@ -11,35 +14,38 @@ class Company {
     this.transactions = CompanyObject.transactions,
     this.price = CompanyObject.price,
     this.location = CompanyObject.location,
-    this.display_phone = CompanyObject.display_phone,
-  
+    this.display_phone = CompanyObject.display_phone
   }
 }
 
-async function getCompanies(request, response, next) {
+async function getCompanies(search, location) {
+    let config = {
+      headers: {
+        Authorization:
+          `Bearer ${process.env.REACT_APP_YELP_API_KEY}`,
+      },
+      params: {
+        term: search,
+        location: location
+      }
+    };
 
-  let companyData = request.query.search;
-  console.log(companyData);
-  try {
+    let url = "https://api.yelp.com/v3/businesses/search"
 
-  let headers = {
-    Authorization: `Bearer ${process.env.REACT_APP_YELP_API_KEY}`
-    }
-  let params = {
-  location: {search},
-  term: {location},
+    let response = await axios.get(url, config).then(response => parseCompanies(response.data));
+
+    return response;
 }
 
- let response = axios.get('https://api.yelp.com/v3/businesses/search',headers, params)
-console.log(response);
-} catch(error) {
-  Promise.resolve()
-  .then(() => {
-    throw new Error(err.message);
-  })
-  .catch(next);
-};
+function parseCompanies(listOfCompany) {
+  try {
+    const companySummary = listOfCompany.businesses.map(company => {
+      return new Company(company);
+    });
+    return Promise.resolve(companySummary);
+  } catch (e) {
+    return Promise.reject(e);
+  }
+}
 
 module.exports = getCompanies;
-
-
