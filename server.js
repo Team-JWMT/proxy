@@ -23,15 +23,15 @@ app.use(express.json())
 const PORT = process.env.PORT || 3003;
 
 //DB Operations
-app.get('/collection/:id', getProfileCompanies);
+app.get('/collection/:email', getProfileCompanies);
 app.post('/collection', addProfile);
-app.delete('/collection/:id', deleteProfile);
-app.put('/collection/:id', updateProfileCompany);
+app.delete('/collection/:email', deleteProfile);
+app.put('/collection/:email', updateProfileCompany);
 
 async function getProfileCompanies(req, res, next) {
   try {
-    let id = req.params.id
-    let result = await Profile.findById(id);
+    let email = req.params.email
+    let result = await Profile.find({ profile_email: email });
     console.log(result);
     res.status(200).send(result);
   } catch (err) {
@@ -63,9 +63,9 @@ async function deleteProfile(req, res, next) {
 
 async function updateProfileCompany(req, res, next) {
   try {
-    let id = req.params.id;
+    let email = req.params.email;
     let update = req.body;
-    let updatedCompany = await Profile.findByIdAndUpdate(id, update, { new: true, overwrite: true });
+    let updatedCompany = await Profile.findOneAndUpdate({ profile_email: email}, update, { new: true, overwrite: true });
     console.log(updatedCompany);
     res.status(200).send(updatedCompany);
   } catch (err) {
