@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const axios = require('axios');
 require('dotenv').config();
@@ -14,27 +14,27 @@ class Company {
     this.transactions = CompanyObject.transactions,
     this.price = CompanyObject.price,
     this.location = CompanyObject.location,
-    this.display_phone = CompanyObject.display_phone
+    this.display_phone = CompanyObject.display_phone;
   }
 }
 
 async function getCompanies(search, location) {
-    let config = {
-      headers: {
-        Authorization:
+  let config = {
+    headers: {
+      Authorization:
           `Bearer ${process.env.REACT_APP_YELP_API_KEY}`,
-      },
-      params: {
-        term: search,
-        location: location
-      }
-    };
+    },
+    params: {
+      term: search,
+      location: location
+    }
+  };
 
-    let url = "https://api.yelp.com/v3/businesses/search"
+  let url = 'https://api.yelp.com/v3/businesses/search';
 
-    let response = await axios.get(url, config).then(response => parseCompanies(response.data));
+  let response = await axios.get(url, config).then(response => parseCompanies(response.data));
 
-    return response;
+  return response;
 }
 
 function parseCompanies(listOfCompany) {
