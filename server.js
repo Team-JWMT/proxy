@@ -52,8 +52,8 @@ async function addProfile(req, res, next) {
 
 async function deleteProfile(req, res, next) {
   try {
-    let id = req.params.id;
-    await Profile.findByIdAndDelete(id);
+    let email = req.params.email;
+    await Profile.findOneAndDelete({ profile_email: email });
     res.status(200).send('Profile was removed');
   } catch (err) {
     console.error(err);
